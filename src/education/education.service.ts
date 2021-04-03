@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
 
 @Injectable()
 export class EducationService {
-  create(createEducationDto: CreateEducationDto) {
-    return 'This action adds a new education';
+  constructor(private prismaService: PrismaService) {}
+  async create(createEducationDto: CreateEducationDto) {
+    return await this.prismaService.record.create({
+      data: {
+        ...createEducationDto,
+        category: 'EDUCATION',
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all education`;
+  async findAll() {
+    return await this.prismaService.record.findMany({
+      where: {
+        category: 'EDUCATION',
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} education`;
+  async findOne(id: number) {
+    return await this.prismaService.record.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateEducationDto: UpdateEducationDto) {
-    return `This action updates a #${id} education`;
+  async update(id: number, updateEducationDto: UpdateEducationDto) {
+    return await this.prismaService.record.update({
+      where: {
+        id,
+      },
+      data: updateEducationDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} education`;
+  async remove(id: number) {
+    return await this.prismaService.record.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
