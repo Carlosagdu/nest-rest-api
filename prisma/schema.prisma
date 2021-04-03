@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id         String   @id @default(uuid())
+  title      String
+  content    String
+  pictureUrl String?
+  createdAt  DateTime @default(now())
+}
+
+model Record {
+  id          Int      @id @default(autoincrement())
+  category    Category
+  name        String
+  description String
+  place       String
+  from        String
+  to          String
+  pictureUrl  String?
+  linkTo      String?
+}
+
+enum Category {
+  EDUCATION
+  EXPERIENCE
+}
