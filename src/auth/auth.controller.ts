@@ -20,4 +20,19 @@ export class AuthController {
       data: req.user,
     };
   }
+
+  @Get('twitter')
+  @UseGuards(AuthGuard('twitter'))
+  async twitterLogin(): Promise<any> {
+    return HttpStatus.OK;
+  }
+
+  @Get('twitter/success')
+  @UseGuards(AuthGuard('twiter'))
+  async twitterLoginRedirect(@Req() req: Request): Promise<any> {
+    return {
+      statusCode: HttpStatus.OK,
+      data: req.user,
+    };
+  }
 }
