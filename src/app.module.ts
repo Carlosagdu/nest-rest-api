@@ -4,10 +4,13 @@ import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
 import { ExperienceModule } from './experience/experience.module';
 import { EducationModule } from './education/education.module';
+import { AuthModule } from './auth/auth.module';
+import { FacebookStrategy } from './auth/strategies/facebook.strategy';
+import { TwitterStrategy } from './auth/strategies/twitter.strategy';
 
 @Module({
-  imports: [PostsModule, ExperienceModule, EducationModule],
+  imports: [PostsModule, ExperienceModule, EducationModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, FacebookStrategy, TwitterStrategy],
 })
 export class AppModule {}
