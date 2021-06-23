@@ -16,7 +16,7 @@ import { LoginDto } from './dto/Login.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('login')
+  @Post('login')
   async login(@Body() data: LoginDto) {
     const response = await this.authService.validateUser(data);
     if (!response) {
