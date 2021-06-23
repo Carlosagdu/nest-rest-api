@@ -1,10 +1,53 @@
-import { Controller, Get, HttpStatus, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/Login.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor() {}
+  constructor(private readonly authService: AuthService) {}
+
+  @Get('login')
+  async login(@Body() data: LoginDto) {
+    const response = await this.authService.validateUser(data);
+    if (!response) {
+      return { statusCode: HttpStatus.UNAUTHORIZED, message: 'wrong password' };
+    } else {
+      return { statusCode: HttpStatus.OK, message: 'welcome abroad' };
+    }
+  }
+
+  @Post('changePW')
+  async changePassword(@Body() body: object) {
+    const response = await this.authService.changePassword(body);
+    if (!response) {
+      return {
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: 'password doesnt match',
+      };
+    } else {
+      return { statusCode: HttpStatus.OK, message: 'password updated' };
+    }
+  }
+
+  @Post('signup')
+  async signup(@Body() data: LoginDto) {
+    const serviceResponse = await this.authService.createUser(data);
+    if (!serviceResponse) {
+      return { statusCode: HttpStatus.UNAUTHORIZED };
+    } else {
+      return { statusCode: HttpStatus.OK };
+    }
+  }
 
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))

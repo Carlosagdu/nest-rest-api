@@ -34,3 +34,9 @@ enum Category {
   EDUCATION
   EXPERIENCE
 }
+
+model User {
+  userId   String  @id @default(uuid())
+  email    String? @unique
+  password String?
+}
