@@ -15,7 +15,7 @@ model Post {
   title      String
   content    String
   pictureUrl String?
-  createdAt  DateTime @default(now())
+  createdAt  DateTime @default(now()) @db.Date
 }
 
 model Record {
