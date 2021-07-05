@@ -6,10 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Express } from 'express';
+import { diskStorage } from 'multer';
+import { editFileName, imageFileFilter } from './utils/posts.util';
 
 @Controller('posts')
 export class PostsController {
@@ -18,6 +24,24 @@ export class PostsController {
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
     return this.postsService.create(createPostDto);
+  }
+
+  @Post('uploadPicture')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './pictures',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const response = {
+      originalname: file.originalname,
+      filename: file.filename,
+    };
+    return response;
   }
 
   @Get()
