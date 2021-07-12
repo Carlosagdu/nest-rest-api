@@ -6,34 +6,64 @@ import { UpdatePostDto } from './dto/update-post.dto';
 @Injectable()
 export class PostsService {
   constructor(private prismaService: PrismaService) {}
+
   async create(createPostDto: CreatePostDto) {
-    return await this.prismaService.post.create({ data: createPostDto });
+    const spanishPost = await this.prismaService.spanishPost.create({
+      data: {
+        title: createPostDto.spanishTitle,
+        content: createPostDto.contentSpanish,
+        pictureName: createPostDto.pictureName,
+      },
+    });
+
+    const englishPost = await this.prismaService.englishPost.create({
+      data: {
+        title: createPostDto.englishTitle,
+        content: createPostDto.contentEnglish,
+        pictureName: createPostDto.pictureName,
+      },
+    });
+
+    await this.prismaService.postLanguage.create({
+      data: {
+        spanishPostId: spanishPost.id,
+        englishPostId: englishPost.id,
+      },
+    });
   }
 
-  async findAll() {
-    return await this.prismaService.post.findMany();
+  // spanish posts
+
+  async findAllSpanish() {
+    return await this.prismaService.spanishPost.findMany();
+  }
+
+  // english posts
+
+  async findAllEnglish() {
+    return await this.prismaService.englishPost.findMany();
   }
 
   async findOne(id: string) {
-    return await this.prismaService.post.findUnique({
-      where: {
-        id,
-      },
-    });
+    // return await this.prismaService.post.findUnique({
+    //   where: {
+    //     id,
+    //   },
+    // });
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
-    return await this.prismaService.post.update({
-      where: {
-        id,
-      },
-      data: updatePostDto,
-    });
+    // return await this.prismaService.post.update({
+    //   where: {
+    //     id,
+    //   },
+    //   data: updatePostDto,
+    // });
   }
 
   async remove(id: string) {
-    return await this.prismaService.post.delete({
-      where: { id },
-    });
+    // return await this.prismaService.post.delete({
+    //   where: { id },
+    // });
   }
 }

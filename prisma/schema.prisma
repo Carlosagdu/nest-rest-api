@@ -10,12 +10,30 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id         String   @id @default(uuid())
-  title      String
-  content    String
-  pictureUrl String?
-  createdAt  DateTime @default(now()) @db.Date
+model PostLanguage {
+  id            Int         @id @default(autoincrement())
+  spanishPostId String
+  spanishPost   SpanishPost @relation(fields: [spanishPostId], references: [id])
+  englishPostId String
+  englishPost   EnglishPost @relation(fields: [englishPostId], references: [id])
+}
+
+model EnglishPost {
+  id           String        @id @default(uuid())
+  title        String
+  content      String
+  pictureName  String?
+  createdAt    DateTime      @default(now()) @db.Date
+  postLanguage PostLanguage?
+}
+
+model SpanishPost {
+  id           String        @id @default(uuid())
+  title        String
+  content      String
+  pictureName  String?
+  createdAt    DateTime      @default(now()) @db.Date
+  postLanguage PostLanguage?
 }
 
 model Record {

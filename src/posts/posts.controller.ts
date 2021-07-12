@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Res,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PostsService } from './posts.service';
@@ -23,7 +24,10 @@ export class PostsController {
 
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+    this.postsService.create(createPostDto);
+    return {
+      message: 'Posts created',
+    };
   }
 
   @Post('uploadPicture')
@@ -44,9 +48,19 @@ export class PostsController {
     return response;
   }
 
-  @Get()
-  findAll() {
-    return this.postsService.findAll();
+  @Get('pictures/:imgpath')
+  seeUploadedFile(@Param('imgpath') image, @Res() res) {
+    return res.sendFile(image, { root: './pictures' });
+  }
+
+  @Get('english')
+  findAllEnglishPosts() {
+    return this.postsService.findAllEnglish();
+  }
+
+  @Get('spanish')
+  findAllSpanishPosts() {
+    return this.postsService.findAllSpanish();
   }
 
   @Get(':id')

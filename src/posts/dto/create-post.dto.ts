@@ -2,10 +2,19 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
-  title: string;
+  spanishTitle: string;
 
   @IsString()
-  content: string;
+  contentSpanish: string;
+
+  @IsString()
+  englishTitle: string;
+
+  @IsString()
+  contentEnglish: string;
+
+  @IsString()
+  pictureName: string;
 
   @IsOptional()
   createdAt: Date;
