@@ -63,9 +63,14 @@ export class PostsController {
     return this.postsService.findAllSpanish();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(id);
+  @Get('english/:id')
+  findOneEnglish(@Param('id') id: string) {
+    return this.postsService.findOneEnglish(id);
+  }
+
+  @Get('spanish/:id')
+  findOneSpanish(@Param('id') id: string) {
+    return this.postsService.findOneSpanish(id);
   }
 
   @Patch(':id')

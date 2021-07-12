@@ -38,18 +38,30 @@ export class PostsService {
     return await this.prismaService.spanishPost.findMany();
   }
 
+  async findOneSpanish(id: string) {
+    return await this.prismaService.spanishPost.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   // english posts
 
   async findAllEnglish() {
     return await this.prismaService.englishPost.findMany();
   }
 
-  async findOne(id: string) {
-    // return await this.prismaService.post.findUnique({
-    //   where: {
-    //     id,
-    //   },
-    // });
+  async findOneEnglish(id: string) {
+    return await this.prismaService.postLanguage.findFirst({
+      where: {
+        englishPostId: id,
+      },
+      include: {
+        comments: true,
+        englishPost: true,
+      },
+    });
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
