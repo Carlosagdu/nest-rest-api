@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { FacebookStrategy } from './auth/strategies/facebook.strategy';
 import { TwitterStrategy } from './auth/strategies/twitter.strategy';
 import { MulterModule } from '@nestjs/platform-express';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MulterModule } from '@nestjs/platform-express';
     EducationModule,
     AuthModule,
     MulterModule.register({ dest: './pictures' }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, FacebookStrategy, TwitterStrategy],
