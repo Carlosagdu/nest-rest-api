@@ -17,6 +17,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { Express } from 'express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from './utils/posts.util';
+import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -81,5 +82,10 @@ export class PostsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postsService.remove(id);
+  }
+
+  @Post('addComment')
+  addPostComment(@Body() createCommentDto: CreateCommentDto) {
+    return this.postsService.createComment(createCommentDto);
   }
 }

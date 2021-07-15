@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
@@ -77,5 +78,30 @@ export class PostsService {
     // return await this.prismaService.post.delete({
     //   where: { id },
     // });
+  }
+
+  async createComment(dto: CreateCommentDto) {
+    const response = await this.prismaService.postLanguage.findFirst({
+      where: {
+        OR: [
+          {
+            spanishPostId: dto.postId,
+          },
+          {
+            englishPostId: dto.postId,
+          },
+        ],
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return this.prismaService.userComments.create({
+      data: {
+        postLanguageId: response.id,
+        ...dto,
+      },
+    });
   }
 }
