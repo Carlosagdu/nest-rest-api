@@ -100,7 +100,9 @@ export class PostsService {
     return this.prismaService.userComments.create({
       data: {
         postLanguageId: response.id,
-        ...dto,
+        userName: dto.userName,
+        email: dto.email,
+        comment: dto.comment,
       },
     });
   }
