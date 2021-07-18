@@ -50,7 +50,15 @@ export class PostsService {
   // english posts
 
   async findAllEnglish() {
-    return await this.prismaService.englishPost.findMany();
+    return await this.prismaService.englishPost.findMany({
+      include: {
+        postLanguage: {
+          include: {
+            comments: true,
+          },
+        },
+      },
+    });
   }
 
   async findOneEnglish(id: string) {
@@ -75,9 +83,14 @@ export class PostsService {
   }
 
   async remove(id: string) {
-    // return await this.prismaService.post.delete({
-    //   where: { id },
-    // });
+    return await this.prismaService.englishPost.delete({
+      where: {
+        id,
+      },
+      include: {
+        postLanguage: true,
+      },
+    });
   }
 
   async createComment(dto: CreateCommentDto) {
