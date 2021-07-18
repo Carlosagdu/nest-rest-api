@@ -119,4 +119,17 @@ export class PostsService {
       },
     });
   }
+
+  async getLatestPosts() {
+    return await this.prismaService.englishPost.findMany({
+      include: {
+        postLanguage: {
+          include: {
+            comments: true,
+          },
+        },
+      },
+      take: 3,
+    });
+  }
 }

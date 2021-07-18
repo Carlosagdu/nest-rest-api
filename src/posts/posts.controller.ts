@@ -64,6 +64,11 @@ export class PostsController {
     return this.postsService.findAllSpanish();
   }
 
+  @Get('latest')
+  findLatestPosts() {
+    return this.postsService.getLatestPosts();
+  }
+
   @Get('english/:id')
   findOneEnglish(@Param('id') id: string) {
     return this.postsService.findOneEnglish(id);
