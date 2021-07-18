@@ -42,14 +42,14 @@ export class AuthService {
   async changePassword(data) {
     const response = await this.validateUser({
       email: data.email,
-      password: data.currentPW,
+      password: data.currentPassword,
     });
     if (!response) {
       return false;
     } else {
       await this.prismaService.user.update({
         where: { email: data.email },
-        data: { password: await bcrypt.hash(data.newPW, 10) },
+        data: { password: await bcrypt.hash(data.newPassword, 10) },
       });
       return true;
     }
