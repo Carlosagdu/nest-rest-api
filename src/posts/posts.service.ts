@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -69,6 +69,7 @@ export class PostsService {
       include: {
         comments: true,
         englishPost: true,
+        spanishPost: true,
       },
     });
   }
@@ -83,14 +84,28 @@ export class PostsService {
   }
 
   async remove(id: string) {
-    return await this.prismaService.englishPost.delete({
+    const englishPost = await this.findOneEnglish(id);
+    await this.prismaService.userComments.deleteMany({
       where: {
-        id,
-      },
-      include: {
-        postLanguage: true,
+        postLanguageId: englishPost.id,
       },
     });
+    await this.prismaService.postLanguage.delete({
+      where: {
+        id: englishPost.id,
+      },
+    });
+    await this.prismaService.spanishPost.delete({
+      where: {
+        id: englishPost.spanishPostId,
+      },
+    });
+    await this.prismaService.englishPost.delete({
+      where: {
+        id: englishPost.englishPostId,
+      },
+    });
+    return { statusCode: HttpStatus.ACCEPTED, message: 'Post deleted' };
   }
 
   async createComment(dto: CreateCommentDto) {

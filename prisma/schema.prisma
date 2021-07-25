@@ -12,22 +12,22 @@ generator client {
 
 model PostLanguage {
   id            Int            @id @default(autoincrement())
-  spanishPostId String
-  spanishPost   SpanishPost    @relation(fields: [spanishPostId], references: [id])
-  englishPostId String
-  englishPost   EnglishPost    @relation(fields: [englishPostId], references: [id])
+  spanishPostId String?
+  spanishPost   SpanishPost?   @relation(fields: [spanishPostId], references: [id])
+  englishPostId String?
+  englishPost   EnglishPost?   @relation(fields: [englishPostId], references: [id])
   comments      UserComments[]
 
 }
 
 model UserComments {
-  id             Int          @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   userName       String
   email          String
   comment        String
-  createdAt      DateTime     @default(now()) @db.Date
-  postLanguageId Int
-  postLanguage   PostLanguage @relation(fields: [postLanguageId], references: [id])
+  createdAt      DateTime      @default(now()) @db.Date
+  postLanguageId Int?
+  postLanguage   PostLanguage? @relation(fields: [postLanguageId], references: [id])
 }
 
 model EnglishPost {
