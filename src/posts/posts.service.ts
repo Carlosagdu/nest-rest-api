@@ -75,12 +75,35 @@ export class PostsService {
   }
 
   async update(id: string, updatePostDto: UpdatePostDto) {
-    // return await this.prismaService.post.update({
-    //   where: {
-    //     id,
-    //   },
-    //   data: updatePostDto,
-    // });
+    const post = await this.prismaService.englishPost.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        postLanguage: true,
+      },
+    });
+    return await this.prismaService.postLanguage.update({
+      where: {
+        id: post.postLanguage.id,
+      },
+      data: {
+        englishPost: {
+          update: {
+            title: updatePostDto.englishTitle,
+            content: updatePostDto.contentEnglish,
+            pictureName: updatePostDto.pictureName,
+          },
+        },
+        spanishPost: {
+          update: {
+            title: updatePostDto.spanishTitle,
+            content: updatePostDto.contentSpanish,
+            pictureName: updatePostDto.pictureName,
+          },
+        },
+      },
+    });
   }
 
   async remove(id: string) {
