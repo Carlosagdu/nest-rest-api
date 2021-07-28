@@ -170,4 +170,12 @@ export class PostsService {
       take: 3,
     });
   }
+
+  async deleteCommentById(id: string) {
+    return await this.prismaService.userComments.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+  }
 }

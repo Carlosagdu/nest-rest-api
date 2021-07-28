@@ -93,4 +93,9 @@ export class PostsController {
   addPostComment(@Body() createCommentDto: CreateCommentDto) {
     return this.postsService.createComment(createCommentDto);
   }
+
+  @Delete('comment/:id')
+  deleteCommentById(@Param('id') id: string) {
+    return this.postsService.deleteCommentById(id);
+  }
 }
