@@ -1,1 +1,1 @@
-web: npm run start:prod; npx prisma db push
+web:  npx prisma db push; npm run start:prod;
